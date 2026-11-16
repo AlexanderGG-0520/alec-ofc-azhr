@@ -82,6 +82,9 @@ jobs:
     name: Sign repository and stage Pages
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
     container:
       image: archlinux:base-devel
     steps:
