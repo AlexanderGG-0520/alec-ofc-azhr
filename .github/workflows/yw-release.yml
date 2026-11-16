@@ -514,6 +514,9 @@ jobs:
         run: |
           pacman -Syu --noconfirm --needed git ccache github-cli
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - name: Restore compiler cache
         id: local_ccache
         uses: actions/cache@v5
@@ -563,6 +566,8 @@ jobs:
             CCACHE_DIR="$CCACHE_DIR" \
             CCACHE_COMPILERCHECK="$CCACHE_COMPILERCHECK" \
             CCACHE_SLOPPINESS="$CCACHE_SLOPPINESS" \
+            AZAHAR_YW_SOURCE_REPO="file://$GITHUB_WORKSPACE" \
+            AZAHAR_YW_SOURCE_REF="commit=$GITHUB_SHA" \
             makepkg --syncdeps --noconfirm --cleanbuild
           sudo -u builder env CCACHE_DIR="$CCACHE_DIR" ccache --show-stats
           {
@@ -571,8 +576,10 @@ jobs:
             sudo -u builder env CCACHE_DIR="$CCACHE_DIR" ccache --show-stats
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
-          package="$(find . -maxdepth 1 -name 'azahar-yw-git-*.pkg.tar.zst' -print -quit)"
-          test -n "$package"
+          shopt -s nullglob
+          packages=(azahar-yw-git-[0-9]*-*.pkg.tar.zst)
+          test "${#packages[@]}" -eq 1
+          package="${packages[0]}"
           namcap "$package"
           pacman -Qlp "$package" > package-files.txt
           grep -Fq '/usr/bin/azahar-yw' package-files.txt

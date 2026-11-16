@@ -4,7 +4,7 @@ pkgver=0.r1.g0000000
 pkgrel=1
 pkgdesc='Unofficial Azahar YW compatibility fork (development branch)'
 arch=('x86_64' 'aarch64')
-url='https://github.com/AlexanderGG-0520/azahar'
+url='https://github.com/AlexanderGG-0520/azahar-yw'
 license=('GPL-2.0-or-later')
 depends=(
   alsa-lib
@@ -32,7 +32,8 @@ makedepends=(
 )
 provides=('azahar-yw')
 source=(
-  "$pkgname::git+$url.git#branch=integration/yw"
+  # CI may build from its already authenticated checkout without exposing a token.
+  "$pkgname::git+${AZAHAR_YW_SOURCE_REPO:-$url.git}#${AZAHAR_YW_SOURCE_REF:-branch=integration/yw}"
   'azahar-yw-launcher'
   'azahar-yw.desktop'
 )
