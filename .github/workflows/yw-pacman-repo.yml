@@ -159,12 +159,16 @@ jobs:
   deploy:
     name: Publish pacman repository to GitHub Pages
     needs: sign-and-stage
+    # Only trusted source refs can publish the signed repository.
+    if: github.ref == 'refs/heads/integration/yw' || github.ref == 'refs/heads/master' || github.event_name == 'release'
     runs-on: ubuntu-latest
     permissions:
       pages: write
       id-token: write
     environment:
-      name: github-pages
+      # Use a dedicated environment so an existing github-pages branch policy
+      # (which may only allow master) cannot preempt this integration-branch job.
+      name: azahar-yw-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy Pages
