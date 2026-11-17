@@ -26,6 +26,11 @@ The workflow builds as an unprivileged user from the checked-out commit. The sou
 
 **Verification before announcing success:** the workflow must finish with a successful **deploy** job; the database and `.sig` files must return HTTP 200; an Arch/CachyOS client must successfully run `pacman -Sy` against the repository without weakening signature verification. The existence of a workflow or build artifact alone is not proof that the repository is live.
 
+
+### Deployment environment
+
+The GitHub Pages deployment runs in the dedicated GitHub Actions environment `azahar-yw-pages`, rather than `github-pages`. This avoids inheriting an existing `github-pages` environment policy that may only permit `master` while the pacman build runs on `integration/yw`. The workflow restricts deployment to `integration/yw`, `master`, or a published release event. For stronger enforcement, protect the `azahar-yw-pages` environment under **Settings → Environments → azahar-yw-pages** and explicitly allow the intended branches and release tags. Do not restrict it solely to `master` if the integration branch must publish.
+
 ## Client setup
 
 Download the public key, verify its fingerprint with a trusted source, then add and locally sign it with `pacman-key`. Do not trust an unknown key solely because it is downloadable.
