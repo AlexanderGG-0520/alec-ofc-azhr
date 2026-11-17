@@ -2,7 +2,7 @@ pkgbase = azahar-yw-git
 	pkgdesc = Unofficial Azahar YW compatibility fork (development branch)
 	pkgver = 0.r1.g0000000
 	pkgrel = 1
-	url = https://github.com/AlexanderGG-0520/azahar-yw
+	url = https://github.com/AlexanderGG-0520/alec-ofc-azhr
 	arch = x86_64
 	arch = aarch64
 	license = GPL-2.0-or-later
@@ -27,7 +27,7 @@ pkgbase = azahar-yw-git
 	depends = wayland
 	depends = zstd
 	provides = azahar-yw
-	source = azahar-yw-git::git+https://github.com/AlexanderGG-0520/azahar-yw.git#branch=integration/yw
+	source = azahar-yw-git::git+https://github.com/AlexanderGG-0520/alec-ofc-azhr.git#branch=integration/yw
 	source = azahar-yw-launcher
 	source = azahar-yw.desktop
 	sha256sums = SKIP

@@ -4,7 +4,7 @@ pkgver=0.r1.g0000000
 pkgrel=1
 pkgdesc='Unofficial Azahar YW compatibility fork (development branch)'
 arch=('x86_64' 'aarch64')
-url='https://github.com/AlexanderGG-0520/azahar-yw'
+url='https://github.com/AlexanderGG-0520/alec-ofc-azhr'
 license=('GPL-2.0-or-later')
 depends=(
   alsa-lib

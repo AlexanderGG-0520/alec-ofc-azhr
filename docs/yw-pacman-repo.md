@@ -1,15 +1,15 @@
 # Signed pacman repository (Azahar YW)
 
-The source repository `AlexanderGG-0520/azahar-yw` (currently private) builds the `azahar-yw-git` binary package from `integration/yw` and publishes an Arch Linux **x86_64** repository through GitHub Pages.
+The public source repository `AlexanderGG-0520/alec-ofc-azhr` builds the `azahar-yw-git` binary package from `integration/yw` and publishes an Arch Linux **x86_64** repository through GitHub Pages.
 
-- Repository database: `https://alexandergg-0520.github.io/azahar-yw/pacman/x86_64/azahar-yw.db`
-- Signing public key: `https://alexandergg-0520.github.io/azahar-yw/pacman-repo-key.asc`
+- Repository database: `https://alexandergg-0520.github.io/alec-ofc-azhr/pacman/x86_64/azahar-yw.db`
+- Signing public key: `https://alexandergg-0520.github.io/alec-ofc-azhr/pacman-repo-key.asc`
 - Workflow: `.github/workflows/yw-pacman-repo.yml`
 - Package/repository names: `azahar-yw-git` / `azahar-yw`
 
 ## One-time maintainer setup
 
-1. In **Settings → Pages**, select **GitHub Actions** as the publication source. The built-in `GITHUB_TOKEN` cannot enable Pages on a previously unconfigured repository.
+1. In **Settings → Pages** for `AlexanderGG-0520/alec-ofc-azhr`, enable Pages and select **GitHub Actions** as the publication source. The built-in `GITHUB_TOKEN` cannot enable Pages on a previously unconfigured repository.
 2. In **Settings → Secrets and variables → Actions**, configure the **existing** repository signing key as one of `PACMAN_GPG_PRIVATE_KEY`, `PACMAN_GPG_KEY`, or `PACMAN_REPO_GPG_PRIVATE_KEY`. The secret can be an ASCII-armored private key or its base64-encoded contents.
 3. If the private key requires a passphrase, set `PACMAN_GPG_PASSPHRASE`, `PACMAN_GPG_PASSWORD`, or `PACMAN_REPO_GPG_PASSPHRASE`.
 4. **Reuse the old GPG signing key** whenever possible. Replacing the key changes the fingerprint and requires users to verify and trust the new key. Do not publish the private key in git or in release assets.
@@ -22,7 +22,7 @@ The workflow fails closed if no signing key is configured. The private key is us
 - Publishing a new GitHub Release starts a build (workflow is also present on the default branch `master`).
 - **Actions → Azahar YW pacman repository → Run workflow** runs it manually from a branch where the workflow is available.
 
-The workflow builds as an unprivileged user from the checked-out commit, so a private source repository does not require an anonymous Git clone. Public users cannot source-build from a private upstream repository; distribute the corresponding GPL source when distributing binaries. The workflow signs the package, creates the `azahar-yw.db` / `azahar-yw.files` databases and their detached signatures, and publishes the package plus public key. The Pages deployment is only attempted after all prior steps succeed.
+The workflow builds as an unprivileged user from the checked-out commit. The source repository is public, but the workflow still uses the local checkout to ensure the package corresponds to the selected commit. The workflow signs the package, creates the `azahar-yw.db` / `azahar-yw.files` databases and their detached signatures, and publishes the package plus public key. The Pages deployment is only attempted after all prior steps succeed.
 
 **Verification before announcing success:** the workflow must finish with a successful **deploy** job; the database and `.sig` files must return HTTP 200; an Arch/CachyOS client must successfully run `pacman -Sy` against the repository without weakening signature verification. The existence of a workflow or build artifact alone is not proof that the repository is live.
 
@@ -35,7 +35,7 @@ Add this repository to `/etc/pacman.conf`:
 ```ini
 [azahar-yw]
 SigLevel = Required DatabaseRequired TrustedOnly
-Server = https://alexandergg-0520.github.io/azahar-yw/pacman/$arch
+Server = https://alexandergg-0520.github.io/alec-ofc-azhr/pacman/$arch
 ```
 
 Then run `sudo pacman -Syu` followed by `sudo pacman -S azahar-yw-git`. **Never** change `SigLevel` to `Never` as a workaround.

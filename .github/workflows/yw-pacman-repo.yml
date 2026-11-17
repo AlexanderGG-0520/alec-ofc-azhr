@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pages: read
+      pages: write
     container:
       image: archlinux:base-devel
     steps:
